@@ -6,7 +6,7 @@ export class Event {
     id: number;
 
     @Column()
-    userId: string
+    accountId: string
 
     @Column()
     eventName: string

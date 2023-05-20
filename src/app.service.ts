@@ -58,7 +58,7 @@ export class AppService {
         let dataDTO
         try {
             const obj = JSON.parse(JSON.stringify(requestDTO.data))
-            dataDTO = new DataDTO(obj.userId, obj.sessionId, obj.events)
+            dataDTO = new DataDTO(obj.accountId, obj.sessionId, obj.events)
         } catch (e) {
             throw "parsing data error"
         }
@@ -68,12 +68,12 @@ export class AppService {
 
 
     async eventsLogic(dataDTO: DataDTO): Promise<ResonseEventDTO> {
-        const userId = dataDTO.userId
+        const accountId = dataDTO.accountId
 
         const events = this.parseEvents(dataDTO.events)
 
         for (let l = 0; l < events.length; l++) {
-            await this.saveEvent(userId, events[l])
+            await this.saveEvent(accountId, events[l])
         }
         return new ResonseEventDTO()
     }
@@ -91,11 +91,11 @@ export class AppService {
     }
 
 
-    async saveEvent(userId: string, event: string) {
+    async saveEvent(accountId: string, event: string) {
         await this.eventRepo.save(
             await this.eventRepo.create(
                 {
-                    userId: userId,
+                    accountId: accountId,
                     eventName: event
                 }
             )

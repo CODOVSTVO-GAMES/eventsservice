@@ -1,9 +1,9 @@
 export class DataDTO {
-    userId: string;
+    accountId: string;
     sessionId: number;
     events: object[]
-    constructor(userId: string, sessionId: number, events: object[]) {
-        this.userId = userId
+    constructor(accountId: string, sessionId: number, events: object[]) {
+        this.accountId = accountId
         this.sessionId = sessionId
         this.events = events
     }
