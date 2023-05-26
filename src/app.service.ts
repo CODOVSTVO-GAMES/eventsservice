@@ -25,9 +25,6 @@ export class AppService {
         catch (e) {
             if (e == 'sessions not found' || e == 'session expired') {
                 status = 403//перезапуск клиента
-            }
-            else if (e == 'server hash bad' || e == 'server DTO bad') {
-                status = 401//активно сигнализировать в логи
             } else if (e == 'too many requests') {
                 status = 429//повторить запрос позже
             } else if (e == 'parsing data error') {
@@ -89,7 +86,7 @@ export class AppService {
             )
         )
     }
-    
+
 }
 
 
