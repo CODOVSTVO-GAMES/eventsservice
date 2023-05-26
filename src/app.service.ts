@@ -42,8 +42,7 @@ export class AppService {
     async eventsHandler(data: any): Promise<ResonseEventDTO> {
         let dataDTO
         try {
-            const obj = JSON.parse(data)
-            dataDTO = new DataDTO(obj.accountId, obj.sessionId, obj.events)
+            dataDTO = new DataDTO(data.accountId, data.sessionId, data.events)
         } catch (e) {
             throw "parsing data error"
         }
