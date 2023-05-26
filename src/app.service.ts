@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { RequestDTO } from './DTO/RequestDTO';
 import { ResponseDTO } from './DTO/ResponseDTO';
 import { DataDTO } from './DTO/DataDTO';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -44,20 +43,9 @@ export class AppService {
     }
 
     async eventsHandler(data: any): Promise<ResonseEventDTO> {
-        let requestDTO;
-        try {
-            requestDTO = new RequestDTO(data.data, data.serverHash)
-        } catch (e) {
-            throw "server DTO bad"
-        }
-
-        if (this.isServerHashBad(requestDTO.serverHash)) {
-            throw "server hash bad"
-        }
-
         let dataDTO
         try {
-            const obj = JSON.parse(JSON.stringify(requestDTO.data))
+            const obj = JSON.parse(data)
             dataDTO = new DataDTO(obj.accountId, obj.sessionId, obj.events)
         } catch (e) {
             throw "parsing data error"
@@ -84,7 +72,7 @@ export class AppService {
         const dataObjects = new Array<string>
         const arr = Object.values(objects)
         for (let l = 0; l < arr.length; l++) {
-            if(arr[l] == ''){continue}
+            if (arr[l] == '') { continue }
             dataObjects.push(arr[l])
         }
         return dataObjects
@@ -101,14 +89,7 @@ export class AppService {
             )
         )
     }
-
-    isServerHashBad(serverHash: string): boolean {
-        if (serverHash == '89969458273-the-main-prize-in-the-show-psychics') {
-            return false
-        }
-        return true
-    }
-
+    
 }
 
 
