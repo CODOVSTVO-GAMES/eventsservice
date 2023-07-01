@@ -19,8 +19,8 @@ export class AppService {
         let status = 200
 
         try {
-            const resonseDataDTO = await this.eventsHandler(data)
-            responseDTO.data = resonseDataDTO
+            const dataDTO = new DataDTO(data.accountId, data.sessionId, data.events)
+            responseDTO.data = await this.eventsLogic(dataDTO)
         }
         catch (e) {
             if (e == 'sessions not found' || e == 'session expired') {
@@ -38,18 +38,6 @@ export class AppService {
 
         return responseDTO
     }
-
-    async eventsHandler(data: any): Promise<ResonseEventDTO> {
-        let dataDTO
-        try {
-            dataDTO = new DataDTO(data.accountId, data.sessionId, data.events)
-        } catch (e) {
-            throw "parsing data error"
-        }
-
-        return this.eventsLogic(dataDTO)
-    }
-
 
     async eventsLogic(dataDTO: DataDTO): Promise<ResonseEventDTO> {
         const accountId = dataDTO.accountId
@@ -77,7 +65,7 @@ export class AppService {
 
     async saveEvent(accountId: string, event: string) {
         await this.eventRepo.save(
-            await this.eventRepo.create(
+            this.eventRepo.create(
                 {
                     accountId: accountId,
                     eventName: event
